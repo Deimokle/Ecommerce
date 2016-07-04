@@ -9,11 +9,6 @@ EcommerceBundle\Entity\Categorie:
             generator:
                 strategy: AUTO
     fields:
-        catLibAdmin:
-            type: string
-            length: '100'
-            unique: true
-            column: cat_lib_admin
         catNiv:
             type: smallint
             column: cat_niv

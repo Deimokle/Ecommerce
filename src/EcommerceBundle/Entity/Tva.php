@@ -9,13 +9,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Tva
 {
-    // Code écrit
-    public function __toString()
-    {
-        return $this->tvaTaux;
-    }
-
-    // Generate code
     /**
      * @var int
      */

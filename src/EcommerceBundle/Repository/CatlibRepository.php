@@ -12,15 +12,4 @@ use Doctrine\ORM\EntityRepository;
  */
 class CatlibRepository extends EntityRepository
 {
-
-    public function getLibellesCat($id_cat)
-    {
-        return $this->getEntityManager()
-            ->createQuery('SELECT p.ctlCateg, p.ctlType, p.ctlItem FROM EcommerceBundle:Catlib p 
-                            WHERE (p.ctlIdcat = :idCat AND p.ctlLocale = :locale)')
-            ->setParameter('idCat', $id_cat)
-            ->setParameter('locale', "fr")
-            ->getResult();
-    }
-
 }

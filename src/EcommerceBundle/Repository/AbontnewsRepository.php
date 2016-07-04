@@ -12,11 +12,4 @@ use Doctrine\ORM\EntityRepository;
  */
 class AbontnewsRepository extends EntityRepository
 {
-    public function findEmail($emailverif)
-    {
-        return $this->getEntityManager()
-            ->createQuery('SELECT a.anlEmail FROM EcommerceBundle:Abontnews a WHERE a.anlEmail = :email')
-            ->setParameters('email', $emailverif)
-            ->getResult();
-    }
 }

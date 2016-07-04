@@ -9,29 +9,28 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Produit
 {
-    
     /**
-     * @var integer
+     * @var int
      */
     private $id;
 
     /**
-     * @var boolean
+     * @var bool
      */
     private $pdtEtat;
 
     /**
-     * @var boolean
+     * @var bool
      */
     private $pdtAvendre;
 
     /**
-     * @var boolean
+     * @var bool
      */
     private $pdtAffNostock;
 
     /**
-     * @var boolean
+     * @var bool
      */
     private $pdtAffPrix;
 
@@ -56,7 +55,7 @@ class Produit
     private $pdtPrixUnitTtc;
 
     /**
-     * @var integer
+     * @var int
      */
     private $pdtPromoPct;
 
@@ -98,6 +97,51 @@ class Produit
     /**
      * @var string
      */
+    private $pdtInfoVal1;
+
+    /**
+     * @var string
+     */
+    private $pdtInfoVal2;
+
+    /**
+     * @var string
+     */
+    private $pdtInfoVal3;
+
+    /**
+     * @var string
+     */
+    private $pdtInfoVal4;
+
+    /**
+     * @var string
+     */
+    private $pdtInfoVal5;
+
+    /**
+     * @var string
+     */
+    private $pdtInfoVal6;
+
+    /**
+     * @var string
+     */
+    private $pdtInfoVal7;
+
+    /**
+     * @var string
+     */
+    private $pdtInfoVal8;
+
+    /**
+     * @var string
+     */
+    private $pdtInfoVal9;
+
+    /**
+     * @var string
+     */
     private $pdtPoids;
 
     /**
@@ -119,11 +163,6 @@ class Produit
      * @var string
      */
     private $pdtPckgPhoto;
-
-    /**
-     * @var \EcommerceBundle\Entity\Tva
-     */
-    private $pdtIdtva;
 
 
     /**
@@ -505,6 +544,213 @@ class Produit
     }
 
     /**
+     * Set pdtInfoVal1
+     *
+     * @param string $pdtInfoVal1
+     * @return Produit
+     */
+    public function setPdtInfoVal1($pdtInfoVal1)
+    {
+        $this->pdtInfoVal1 = $pdtInfoVal1;
+
+        return $this;
+    }
+
+    /**
+     * Get pdtInfoVal1
+     *
+     * @return string 
+     */
+    public function getPdtInfoVal1()
+    {
+        return $this->pdtInfoVal1;
+    }
+
+    /**
+     * Set pdtInfoVal2
+     *
+     * @param string $pdtInfoVal2
+     * @return Produit
+     */
+    public function setPdtInfoVal2($pdtInfoVal2)
+    {
+        $this->pdtInfoVal2 = $pdtInfoVal2;
+
+        return $this;
+    }
+
+    /**
+     * Get pdtInfoVal2
+     *
+     * @return string 
+     */
+    public function getPdtInfoVal2()
+    {
+        return $this->pdtInfoVal2;
+    }
+
+    /**
+     * Set pdtInfoVal3
+     *
+     * @param string $pdtInfoVal3
+     * @return Produit
+     */
+    public function setPdtInfoVal3($pdtInfoVal3)
+    {
+        $this->pdtInfoVal3 = $pdtInfoVal3;
+
+        return $this;
+    }
+
+    /**
+     * Get pdtInfoVal3
+     *
+     * @return string 
+     */
+    public function getPdtInfoVal3()
+    {
+        return $this->pdtInfoVal3;
+    }
+
+    /**
+     * Set pdtInfoVal4
+     *
+     * @param string $pdtInfoVal4
+     * @return Produit
+     */
+    public function setPdtInfoVal4($pdtInfoVal4)
+    {
+        $this->pdtInfoVal4 = $pdtInfoVal4;
+
+        return $this;
+    }
+
+    /**
+     * Get pdtInfoVal4
+     *
+     * @return string 
+     */
+    public function getPdtInfoVal4()
+    {
+        return $this->pdtInfoVal4;
+    }
+
+    /**
+     * Set pdtInfoVal5
+     *
+     * @param string $pdtInfoVal5
+     * @return Produit
+     */
+    public function setPdtInfoVal5($pdtInfoVal5)
+    {
+        $this->pdtInfoVal5 = $pdtInfoVal5;
+
+        return $this;
+    }
+
+    /**
+     * Get pdtInfoVal5
+     *
+     * @return string 
+     */
+    public function getPdtInfoVal5()
+    {
+        return $this->pdtInfoVal5;
+    }
+
+    /**
+     * Set pdtInfoVal6
+     *
+     * @param string $pdtInfoVal6
+     * @return Produit
+     */
+    public function setPdtInfoVal6($pdtInfoVal6)
+    {
+        $this->pdtInfoVal6 = $pdtInfoVal6;
+
+        return $this;
+    }
+
+    /**
+     * Get pdtInfoVal6
+     *
+     * @return string 
+     */
+    public function getPdtInfoVal6()
+    {
+        return $this->pdtInfoVal6;
+    }
+
+    /**
+     * Set pdtInfoVal7
+     *
+     * @param string $pdtInfoVal7
+     * @return Produit
+     */
+    public function setPdtInfoVal7($pdtInfoVal7)
+    {
+        $this->pdtInfoVal7 = $pdtInfoVal7;
+
+        return $this;
+    }
+
+    /**
+     * Get pdtInfoVal7
+     *
+     * @return string 
+     */
+    public function getPdtInfoVal7()
+    {
+        return $this->pdtInfoVal7;
+    }
+
+    /**
+     * Set pdtInfoVal8
+     *
+     * @param string $pdtInfoVal8
+     * @return Produit
+     */
+    public function setPdtInfoVal8($pdtInfoVal8)
+    {
+        $this->pdtInfoVal8 = $pdtInfoVal8;
+
+        return $this;
+    }
+
+    /**
+     * Get pdtInfoVal8
+     *
+     * @return string 
+     */
+    public function getPdtInfoVal8()
+    {
+        return $this->pdtInfoVal8;
+    }
+
+    /**
+     * Set pdtInfoVal9
+     *
+     * @param string $pdtInfoVal9
+     * @return Produit
+     */
+    public function setPdtInfoVal9($pdtInfoVal9)
+    {
+        $this->pdtInfoVal9 = $pdtInfoVal9;
+
+        return $this;
+    }
+
+    /**
+     * Get pdtInfoVal9
+     *
+     * @return string 
+     */
+    public function getPdtInfoVal9()
+    {
+        return $this->pdtInfoVal9;
+    }
+
+    /**
      * Set pdtPoids
      *
      * @param string $pdtPoids
@@ -618,6 +864,11 @@ class Produit
     {
         return $this->pdtPckgPhoto;
     }
+    /**
+     * @var \EcommerceBundle\Entity\Tva
+     */
+    private $pdtIdtva;
+
 
     /**
      * Set pdtIdtva

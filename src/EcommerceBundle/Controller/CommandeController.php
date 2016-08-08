@@ -23,36 +23,88 @@ class CommandeController extends Controller
      * Lists all Commande entities.
      *
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $commandes = $em->getRepository('EcommerceBundle:Commande')->findAll();
+        $session = $request->getSession();
 
-        foreach ($commandes as $idx_c => $commande) {
-            $etatcom = $commande->getComEtat();
-            switch ($etatcom) {
-                case 1:
-                    $etatcomlib = "Confirmée"; break;
-                case 2:
-                    $etatcomlib = "En préparation"; break;
-                case 3:
-                    $etatcomlib = "Expédiée"; break;
-                case 4:
-                    $etatcomlib = "Reçue"; break;
-                case 5:
-                    $etatcomlib = "Close"; break;
-                case 9:
-                    $etatcomlib = "Annulée"; break;
-                default:
-                    $etatcomlib = "Saisie";
+        if ($session->get('triAdminComm') == null)
+            $session->set('triAdminComm', 'etat');
+
+        $tri = $session->get('triAdminComm');
+
+        //$commandes = $em->getRepository('EcommerceBundle:Commande')->findAll();
+        if ($tri != "etat") {
+            $etatsComm = "";
+            $commandes = $em->getRepository('EcommerceBundle:Commande')->getCommandesByDateVente();
+            $libTri1 = "Etat";
+            $libTri2 = "etat";
+            foreach ($commandes as $idx_c => $commande) {
+                $etatcom = $commande->getComEtat();
+                switch ($etatcom) {
+                    case 1:
+                        $etatcomlib = "Confirmée"; break;
+                    case 2:
+                        $etatcomlib = "En préparation"; break;
+                    case 3:
+                        $etatcomlib = "Expédiée"; break;
+                    case 4:
+                        $etatcomlib = "Reçue"; break;
+                    case 5:
+                        $etatcomlib = "Close"; break;
+                    case 9:
+                        $etatcomlib = "Annulée"; break;
+                    default:
+                        $etatcomlib = "Saisie";
+                }
+                $commande->etatCom = $etatcomlib;
             }
-            $commande->etatCom = $etatcomlib;
         }
+        else {
+            $etatsComm = $em->getRepository('EcommerceBundle:Commande')->getEtatsCommandesByEtat();
+            $commandes = $em->getRepository('EcommerceBundle:Commande')->getCommandesByEtat();
+            $libTri1 = "Date de vente";
+            $libTri2 = "date";
+            //var_dump($etatsComm);
+            foreach ($etatsComm as $idx_e => $etat) {
+                $etatcom = $etat["comEtat"];
+                switch ($etatcom) {
+                    case 1:
+                        $etatcomlib = "Confirmée"; break;
+                    case 2:
+                        $etatcomlib = "En préparation"; break;
+                    case 3:
+                        $etatcomlib = "Expédiée"; break;
+                    case 4:
+                        $etatcomlib = "Reçue"; break;
+                    case 5:
+                        $etatcomlib = "Close"; break;
+                    case 9:
+                        $etatcomlib = "Annulée"; break;
+                    default:
+                        $etatcomlib = "Saisie";
+                }
+                $etatsComm[$idx_e]["Lib"] = $etatcomlib;
+            }
+        }
+        //var_dump($etatsComm);
+        //var_dump($commandes);
 
         return $this->render('EcommerceBundle:commande:index.html.twig', array(
+            'tri' => $tri,
+            'libTri1' => $libTri1,
+            'libTri2' => $libTri2,
+            'etatsComm'=> $etatsComm,
             'commandes' => $commandes,
         ));
+    }
+
+    public function triCommandesAction(Request $request, $id)
+    {
+        $session = $request->getSession();
+        $session->set('triAdminComm', $id);
+        return $this->redirectToRoute('commande_index');
     }
 
     /**
@@ -65,11 +117,11 @@ class CommandeController extends Controller
         $panieruser = $session->get('cartArray');
         $infos = $session->get('cartInfos');
 
-        $codebanque=2;
+        $codebanque=1;
 
         $commande = new Commande();
-
-        if ($codebanque == 2) {
+        $codebanque = 1;
+        if ($codebanque == 1) {
             $em = $this->getDoctrine()->getManager();
 
             $count = count($commandes = $em->getRepository('EcommerceBundle:Commande')->findAll());
@@ -78,7 +130,8 @@ class CommandeController extends Controller
 
             $commande->setComCode('C'.$count.$time->format('YmdHis'));
             $commande->setComEtat(2); // set
-            $commande->setComCdebank($codebanque);
+            //$commande->setComCdebank(1);
+            $commande->setComCdebank('B'.$count.$time->format('YmdHis'));
             $commande->setComVenteDte($time); // set
             $commande->setComExpedDte(null); // set
             $commande->setComMajDte(null); // set
@@ -164,9 +217,15 @@ class CommandeController extends Controller
         ));
     }
 
-    public function generateFactureAction(Commande $id_commande)
+    public function generateFactureAction(Request $request, Commande $id_commande)
     {
         $em = $this->getDoctrine()->getManager();
+
+        $session = $request->getSession();
+        $panier = $session->get('cartArray');
+
+        $langues = $this->container->get('recup.langues')->RecupLangues($session);
+
         $produits = $em->getRepository('EcommerceBundle:Compdt')->findBy(array('cxpIdcom' => $id_commande));
         $commande = $em->getRepository('EcommerceBundle:Commande')->findOneBy(array('id' => $id_commande));
         $adresses = $em->getRepository('EcommerceBundle:AdresseModele')->findBy(array('adrIdcom' => $id_commande));
@@ -175,18 +234,48 @@ class CommandeController extends Controller
             $this->renderView('EcommerceBundle:facture:facture.html.twig', array(
                     'produits' => $produits,
                     'adresses' => $adresses,
-                    'commande' => $commande
+                    'commande' => $commande,
+                    'paniers' => $panier,
+                    'langues' => $langues,
                 )),
 
             'uploads/pdf/' . $commande->getComFact() . '.pdf'
         );
 
+        $mailcommande = $adresses[0]->getAdrEmail();
+        $message = \Swift_Message::newInstance()
+            ->setSubject('Kiffa facture')
+            ->setFrom('q.dutrevis@gmail.com')
+            ->setTo($mailcommande)
+            ->setBcc('q.dutrevis@gmail.com')
+            ->setBody(
+                $this->renderView('@Ecommerce/facture/confirmation.html.twig', array(
+                        'produits' => $produits,
+                        'adresses' => $adresses,
+                        'commande' => $commande,
+                        'langues' => $langues,
+                        'paniers' => $panier,
+
+                )),
+                'text/html'
+            )
+            //->attach(\Swift_Attachment::fromPath('uploads/pdf/'.$commande->getComFact().'.pdf'));
+        ;
+/*        $message->attach(
+            \Swift_Attachment::fromPath('/path/to/image.jpg')->setDisposition('inline')
+        );*/
+
+        $this->get('mailer')->send($message);
+
 
 
         return $this->render('@Ecommerce/facture/confirmation.html.twig', array(
+            'langues' => $langues,
             'produits' => $produits,
             'adresses' => $adresses,
-            'commande' => $commande
+            'commande' => $commande,
+            'paniers' => $panier,
+
         ));
     }
     
